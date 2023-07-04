@@ -1,0 +1,29 @@
+﻿@using App.Web.Utils;
+@model (List<TreeNode<Guid>> data, int index)
+
+@{
+    var data = Model.data;
+    var index = Model.index;
+    var paddingLeft = $"{(20 * index)}px";
+}
+
+
+@foreach (var item in data
+       .OrderByDescending(x => x.Children.Any())
+       .ThenBy(x => x.Name)
+       .Select(x => new { Node = x, ComponentId = Guid.NewGuid() }))
+{
+    <div class="row">
+        <div class="col" style="padding-left:@paddingLeft">
+            <input class="justify-content-start" form-check-input folder" type="checkbox">
+            <span>@(item.Node.Name)</span>
+            <input class="form-check-input folderId" value="@item.Node.Id" type="hidden">
+        </div>
+        
+    </div>
+    @if (item.Node.Children.Any())
+    {
+        <partial name="_folder" model="(item.Node.Children, index + 1)" />
+
+    }
+}

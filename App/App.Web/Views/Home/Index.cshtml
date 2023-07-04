@@ -1,0 +1,35 @@
+﻿@using App.Web.ViewModels;
+@using App.Web.Utils
+@model HomeIndexViewModel
+
+@{
+    ViewData["Title"] = "Home Page";
+    var data = ViewBag.Data as List<TreeNode<Guid>>;
+}
+
+<div class="container">
+    <form asp-action="Index">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="ParentFolderId"/>
+        <div class="row mb-3">
+            <div class="col-4">
+                <label asp-for="FolderName" class="form-label"></label>
+                <input asp-for="FolderName" class="form-control" autocomplete="off">
+                <span asp-validation-for="FolderName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-12">
+                <partial name="_Folder" model="(data, 0)" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-2">
+                <button class="btn btn-primary" type="submit">
+                    Add folder
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
